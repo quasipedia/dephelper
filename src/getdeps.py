@@ -11,6 +11,7 @@ import distutils.sysconfig as sysconfig
 import os
 import yaml
 from BeautifulSoup import BeautifulSoup as Soup
+from pkg_resources import resource_string
 
 __author__ = "Mac Ryan"
 __copyright__ = "Copyright 2011, Mac Ryan"
@@ -33,7 +34,8 @@ class Discoverer(object):
         exclude   : list of file names to exclude from dependency analysis.
         '''
         # Load list of stdlib modules
-        self.__stdlib_modules = yaml.load(open('stdlib-modules.yml'))
+        data = resource_string(__name__, 'data/stdlib-modules.yml')
+        self.__stdlib_modules = yaml.load(data)
         # Find all source files to be examined (and save internal moudules)
         files = []
         self.__internal_modules = []

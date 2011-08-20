@@ -48,7 +48,7 @@ def main():
                     soup.findAll('tt', {'class':'xref'})]
     data = yaml.dump(module_names, default_flow_style=False,
                      allow_unicode=False, width = 79)
-    f = open('stdlib-modules.yml', 'w')
+    f = open('data/stdlib-modules.yml', 'w')
     f.write(dedent(HEADER))
     now = dt.now().strftime('%d %B %Y')
     f.write('# Last scraped from docs.python.org on: %s\n\n' % now)
