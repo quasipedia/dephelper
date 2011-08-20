@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8  -*-
+
 '''
 This utility scrapes official docs of python.org for a complete list of modules
 from the standard library.
@@ -34,7 +35,7 @@ HEADER = '''\
     #
     '''
 
-def run_as_script():
+def main():
     # Get the page content, this requires changing the user-agent, as the
     # default one might be filtered by certain sites.
     url = 'http://docs.python.org/modindex.html'
@@ -47,7 +48,7 @@ def run_as_script():
                     soup.findAll('tt', {'class':'xref'})]
     data = yaml.dump(module_names, default_flow_style=False,
                      allow_unicode=False, width = 79)
-    f = open('python-module-names.yml', 'w')
+    f = open('stdlib-modules.yml', 'w')
     f.write(dedent(HEADER))
     now = dt.now().strftime('%d %B %Y')
     f.write('# Last scraped from docs.python.org on: %s\n\n' % now)
@@ -55,4 +56,4 @@ def run_as_script():
     f.close()
 
 if __name__ == '__main__':
-    run_as_script()
+    main()
