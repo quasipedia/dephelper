@@ -94,17 +94,30 @@ class Discoverer(object):
         return res
 
 def main():
+    # General description of the program
     desc = 'Find the external dependencies of a python source tree.'
     parser = argparse.ArgumentParser(description=desc)
+    # Tree base option
     hlpmsg = 'The base of the source tree to be serached for dependencies, ' + \
              'defaults to the working directory'
     parser.add_argument('-b', '--tree-base', default='.', help=hlpmsg)
+    # Exclude files option
     hlpmsg = 'Files to be excluded from the source tree search, ' + \
              'defaults to none'
     parser.add_argument('-e', '--excluded-files', default='',
                                                   nargs='*', help=hlpmsg)
+    # Include internal modules option
+    hlpmsg = 'Includes internal modules as external dependencies'
+    parser.add_argument('-i', '--include-internals', action='store_true',
+                        dest='internals', help=hlpmsg)
+    # Include internal modules option
+    hlpmsg = 'Includes stdlib modules as external dependencies'
+    parser.add_argument('-s', '--include-stdlib', action='store_true',
+                        dest='stdlib', help=hlpmsg)
+    # Actual command parsing
     args = parser.parse_args()
-    print(Discoverer(args.tree_base, args.excluded_files).get_imports())
+    discoverer = Discoverer(args.tree_base, args.excluded_files)
+    print(discoverer.get_imports(internals=args.internals, stdlib=args.stdlib))
 
 if __name__ == '__main__':
     main()
