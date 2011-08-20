@@ -2,9 +2,11 @@
 # -*- coding: utf-8  -*-
 
 '''
-This is a small script that tries to find the dependencies used in the source.
+This is a small script that tries to find the dependencies used in the source of
+a python program and match them with debian packages available in repositories.
 '''
 
+import argparse
 import distutils.sysconfig as sysconfig
 import os
 import yaml
@@ -25,7 +27,7 @@ class Discoverer(object):
     Class for discovering and organising all dependencies in a project.
     '''
 
-    def __init__(self, tree_base='src', exclude=[]):
+    def __init__(self, tree_base, exclude):
         '''
         tree_base : base of the source tree.
         exclude   : list of file names to exclude from dependency analysis.
@@ -92,7 +94,17 @@ class Discoverer(object):
         return res
 
 def main():
-    print(Discoverer('../atc/src', ['setup.py']).get_imports())
+    desc = 'Find the external dependencies of a python source tree.'
+    parser = argparse.ArgumentParser(description=desc)
+    hlpmsg = 'The base of the source tree to be serached for dependencies, ' + \
+             'defaults to the working directory'
+    parser.add_argument('-b', '--tree-base', default='.', help=hlpmsg)
+    hlpmsg = 'Files to be excluded from the source tree search, ' + \
+             'defaults to none'
+    parser.add_argument('-e', '--excluded-files', default='',
+                                                  nargs='*', help=hlpmsg)
+    args = parser.parse_args()
+    print(Discoverer(args.tree_base, args.excluded_files).get_imports())
 
 if __name__ == '__main__':
     main()
